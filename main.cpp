@@ -24,6 +24,17 @@ public:
     // Извлечение элемента
     T pop() {
 
+        if (itemsCount == 0) {
+            return T(0);
+        }
+
+        Item* temp = lastItemPtr;
+
+        T retval = temp->data;
+        lastItemPtr = temp->prevItem;
+        delete(temp);
+        itemsCount--;
+        return retval;
     }
 
     // Получение количества элементов в стеке
@@ -33,7 +44,7 @@ public:
 
 private:
 
-    // Переменная хранящая количество элементов
+    // Переменная, хранящая количество элементов
     size_t		itemsCount;
 
     // Структрура, описывающая элементы в стеке, стек выполнен на основе связного списка
@@ -47,7 +58,7 @@ private:
 
     };
 
-    // Указатель на вршину стека (первый с конца)
+    // Указатель на вершину стека (первый с конца)
     Item*		lastItemPtr;
 };
 
@@ -57,5 +68,8 @@ int main()
     myStack.push(1);
     myStack.push(2);
 
-    std::cout << myStack.getSize();
+    std::cout << myStack.getSize() << "\n";
+    std::cout << myStack.pop() << "\n";
+    std::cout << myStack.getSize() << "\n";
 }
+
