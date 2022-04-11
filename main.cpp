@@ -5,13 +5,20 @@ class CustomStack
 {
 public:
 
+    // Конструктор
     CustomStack() {
         itemsCount = 0;
         lastItemPtr = nullptr;
     }
 
+    // Деструктор
     ~CustomStack() {
-
+        Item* temp;
+        for (size_t i = 0; i < itemsCount; i++) {
+            temp = lastItemPtr;
+            lastItemPtr = temp->prevItem;
+            delete(temp);
+        }
     }
 
     // Добавление нового элемента
@@ -64,12 +71,9 @@ private:
 
 int main()
 {
-    CustomStack<int> myStack;
-    myStack.push(1);
-    myStack.push(2);
+    CustomStack<int> *myStack = new CustomStack<int>();
+    myStack->push(1);
+    myStack->push(2);
 
-    std::cout << myStack.getSize() << "\n";
-    std::cout << myStack.pop() << "\n";
-    std::cout << myStack.getSize() << "\n";
+    delete myStack;
 }
-
