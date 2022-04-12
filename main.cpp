@@ -29,6 +29,19 @@ protected:
 
 };
 
+// Класс исключения, генерируемого при извлечении элемента из пустого стека
+class EStackEmpty: public EStackException
+{
+public:
+
+    // Конструктор
+    EStackEmpty(const char* messageText) : EStackException(messageText)
+    {
+
+    }
+
+};
+
 // Класс стека
 template<typename T>
 class CustomStack
