@@ -1,5 +1,35 @@
 #include <iostream>
+#include <cstring>
 
+// Класс исключения
+class EStackException
+{
+public:
+
+    // Конструктор
+    EStackException(const char* messageText) {
+        exceptionText = new char[strlen(messageText) + 1];
+        strcpy(exceptionText, messageText);
+    }
+
+    // Деструктор
+    ~EStackException() {
+        delete exceptionText;
+    }
+
+    // Выдать сообщение об ошибке
+    const char* what() {
+        return exceptionText;
+    }
+
+protected:
+
+    // Указатель на строку
+    char* exceptionText;
+
+};
+
+// Класс стека
 template<typename T>
 class CustomStack
 {
