@@ -75,7 +75,7 @@ public:
     T pop() {
 
         if (itemsCount == 0) {
-            return T(0);
+            throw EStackEmpty("Stack is Empty!");
         }
 
         Item* temp = lastItemPtr;
@@ -117,6 +117,14 @@ int main()
     CustomStack<int> *myStack = new CustomStack<int>();
     myStack->push(1);
     myStack->push(2);
+
+    for(int i = 0; i < 3; i++) {
+        try {
+            myStack->pop();
+        } catch (EStackException& e) {
+            std::cout << e.what();
+        }
+    }
 
     delete myStack;
 }
