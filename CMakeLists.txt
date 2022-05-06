@@ -16,5 +16,10 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
 
 add_executable(lab_1
   main.cpp
+  stack.h
+  person.h
+  person.cpp
+  person_keeper.h
+  person_keeper.cpp
 )
 target_link_libraries(lab_1 Qt${QT_VERSION_MAJOR}::Core)

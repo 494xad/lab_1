@@ -1,4 +1,6 @@
-#include <iostream>
+#ifndef STACK_H
+#define STACK_H
+
 #include <cstring>
 
 // Класс исключения
@@ -43,7 +45,7 @@ public:
 };
 
 
-// Класс стека
+// Класс стека на основе связного списка
 template<typename T>
 class CustomStack
 {
@@ -96,8 +98,8 @@ public:
 
 private:
 
-    // Переменная, хранящая количество элементов
-    size_t		itemsCount;
+    // Количетсво элементов в стеке
+    size_t itemsCount;
 
     // Структрура, описывающая элементы в стеке, стек выполнен на основе связного списка
     struct Item {
@@ -110,22 +112,8 @@ private:
     };
 
     // Указатель на вершину стека (первый с конца)
-    Item*		lastItemPtr;
+    Item* lastItemPtr;
 };
 
-int main()
-{
-    CustomStack<int> *myStack = new CustomStack<int>();
-    myStack->push(1);
-    myStack->push(2);
 
-    for(int i = 0; i < 3; i++) {
-        try {
-            myStack->pop();
-        } catch (EStackException& e) {
-            std::cout << e.what();
-        }
-    }
-
-    delete myStack;
-}
+#endif // STACK_H
