@@ -44,6 +44,15 @@ public:
 
 };
 
+class EStackBoundsError : public EStackException
+{
+public:
+    // Конструктор
+    EStackBoundsError(const char* messageText) : EStackException(messageText)
+    {
+
+    }
+};
 
 // Класс стека на основе связного списка
 template<typename T>
@@ -92,8 +101,28 @@ public:
     }
 
     // Получение количества элементов в стеке
-    size_t getSize() {
+    size_t getSize() const {
         return itemsCount;
+    }
+
+    const T& getByIndex(int index) const
+    {
+        if (index > itemsCount - 1)
+        {
+            throw EStackBoundsError("Not valid index passed");
+        }
+
+        Item* current = lastItemPtr;
+        int count = itemsCount - 1;
+        while (current != nullptr)
+        {
+            if (count == index)
+            {
+                return current->data;
+            }
+            count--;
+            current = current->prevItem;
+        }
     }
 
 private:

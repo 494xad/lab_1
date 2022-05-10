@@ -18,6 +18,7 @@ Person::Person(const Person &person)
 {
     firstName_ = person.firstName_;
     lastName_ = person.lastName_;
+    patronymic_ = person.patronymic_;
 }
 
 void Person::setLastName(const std::string &lastName)
