@@ -1,6 +1,5 @@
 #include "person_keeper.h"
 
-#include <fstream>
 #include <sstream>
 #include <vector>
 
@@ -10,18 +9,12 @@ PersonKeeper &PersonKeeper::getInstance()
     return instance;
 }
 
-CustomStack<Person> PersonKeeper::readPersons(const std::string &path)
+CustomStack<Person> PersonKeeper::readPersons(std::istream& stream)
 {
-    std::fstream fileToRead(path);
-    if (!fileToRead.is_open())
-    {
-        throw std::runtime_error("Failed to open file " + path);
-    }
-
     CustomStack<Person> personsStack;
 
     std::string lineWithData;
-    while (std::getline(fileToRead, lineWithData)) {
+    while (std::getline(stream, lineWithData)) {
         // Добавляем считанную строчку из файла в поток для парсинга
         std::stringstream inputStream(lineWithData);
         // Части полного имени
@@ -38,7 +31,7 @@ CustomStack<Person> PersonKeeper::readPersons(const std::string &path)
             }
             else
             {
-                throw std::runtime_error("invalid format in file + " + path);
+                throw std::runtime_error("invalid format in file");
             }
             counter++;
         }
@@ -48,12 +41,20 @@ CustomStack<Person> PersonKeeper::readPersons(const std::string &path)
             personsStack.push(p);
         }
     }
-    fileToRead.close();
 
     return personsStack;
 }
 
-void PersonKeeper::writePersons(const CustomStack<Person> &persons)
+void PersonKeeper::writePersons(const CustomStack<Person> &persons, std::ostream &stream)
 {
-
+    if (!persons.getSize())
+    {
+        return;
+    }
+    for (int i = 0; i < persons.getSize(); i++)
+    {
+        const Person& p = persons.getByIndex(i);
+        stream << p.getFirstName() << " " << p.getLastName() << " " << p.getPatronymic() << '\n';
+    }
 }
+

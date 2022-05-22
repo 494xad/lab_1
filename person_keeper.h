@@ -4,6 +4,8 @@
 #include "person.h"
 #include "stack.h"
 
+#include <fstream>
+
 /// Класс синглетон, позволяющий считывать
 /// и записывать информацию о людях
 class PersonKeeper
@@ -15,12 +17,13 @@ public:
     static PersonKeeper& getInstance();
 
     // Считать информацию о людях из файла
-    // path Путь к файлу
-    CustomStack<Person> readPersons(const std::string& path);
+    // stream Поток для чтения
+    CustomStack<Person> readPersons(std::istream& stream);
 
     // Записать в файл информацию людях
     // persons Стек содержащий информацию о людях
-    void writePersons(const CustomStack<Person>& persons);
+    // stream Поток для записи
+    void writePersons(const CustomStack<Person>& persons, std::ostream& stream);
 
 protected:
     // Добавляем конструктор в private часть
