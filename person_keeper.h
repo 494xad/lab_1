@@ -11,8 +11,6 @@
 class PersonKeeper
 {
 public:
-    PersonKeeper(const PersonKeeper& person) = delete;
-
     // Метод получения экземпляра синглтона
     static PersonKeeper& getInstance();
 
@@ -28,6 +26,8 @@ public:
 protected:
     // Добавляем конструктор в private часть
     PersonKeeper() {}
+
+    PersonKeeper(const PersonKeeper& person) = delete;
 
     ~PersonKeeper() {}
 

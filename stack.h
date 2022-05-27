@@ -20,7 +20,7 @@ public:
     }
 
     // Выдать сообщение об ошибке
-    const char* what() {
+    const char* what() const {
         return exceptionText;
     }
 
@@ -77,7 +77,7 @@ public:
     }
 
     // Добавление нового элемента
-    void push(const T item) {
+    void push(const T& item) {
         // последний элемент в стеке становится предпоследним
         lastItemPtr = new Item{ lastItemPtr, item };
 

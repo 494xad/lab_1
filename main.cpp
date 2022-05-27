@@ -13,7 +13,6 @@ void PrintAllPersons(const CustomStack<Person>& persons)
 
 int main(int argc, char** argv)
 {
-
     setlocale(LC_ALL, "Russian");
 
     if (argc < 3)
@@ -22,26 +21,41 @@ int main(int argc, char** argv)
         std::exit(-1);
     }
 
-    std::fstream fileToRead(argv[1]);
-    if (!fileToRead.is_open())
+    try
     {
-        throw std::runtime_error("Failed to open file " + std::string(argv[1]));
+        std::fstream fileToRead(argv[1]);
+        if (!fileToRead.is_open())
+        {
+            throw std::runtime_error("Failed to open file " + std::string(argv[1]));
+        }
+
+        PersonKeeper& keeper = PersonKeeper::getInstance();
+        CustomStack<Person> result = keeper.readPersons(fileToRead);
+        std::cout << "Receieved data from " << argv[1] << ":\n";
+        PrintAllPersons(result);
+        fileToRead.close();
+
+        std::fstream fileToWrite(argv[2], std::ios::app);
+        if (!fileToWrite.is_open())
+        {
+            throw std::runtime_error("Failed to open file " + std::string(argv[2]));
+        }
+        keeper.writePersons(result, fileToWrite);
+
+        fileToWrite.close();
     }
-
-    PersonKeeper& keeper = PersonKeeper::getInstance();
-    CustomStack<Person> result = keeper.readPersons(fileToRead);
-    std::cout << "Receieved data from " << argv[1] << ":\n";
-    PrintAllPersons(result);
-    fileToRead.close();
-
-    std::fstream fileToWrite(argv[2], std::ios::app);
-    if (!fileToWrite.is_open())
+    catch(const std::exception& ex)
     {
-        throw std::runtime_error("Failed to open file " + std::string(argv[2]));
+        std::cerr << ex.what();
     }
-    keeper.writePersons(result, fileToWrite);
-
-    fileToWrite.close();
+    catch(const EStackException& ex)
+    {
+        std::cerr << "Stack exception:" << ex.what();
+    }
+    catch(...)
+    {
+        std::cerr << "Unknown error";
+    }
 
     return 0;
 }

@@ -3,7 +3,7 @@
 #include <sstream>
 #include <vector>
 
-PersonKeeper &PersonKeeper::getInstance()
+PersonKeeper& PersonKeeper::getInstance()
 {
     static PersonKeeper instance;
     return instance;
@@ -15,33 +15,18 @@ CustomStack<Person> PersonKeeper::readPersons(std::istream& stream)
 
     std::string lineWithData;
     while (std::getline(stream, lineWithData)) {
-        // Добавляем считанную строчку из файла в поток для парсинга
-        std::stringstream inputStream(lineWithData);
-        // Части полного имени
-        std::vector<std::string> partsOfName;
-        // Формат Имя Фамилия Отчество, поэтому кол-во = 3
-        constexpr int PartsCount = 3;
-        int counter = 0;
-        std::string temp;
-        while( std::getline(inputStream, temp, ' '))
+        // Добавляем считанную строчку из файла в поток чтения
+        std::istringstream iss(lineWithData);
+        std::string firstName, lastName, patronymic;
+        if (iss >> firstName >> lastName >> patronymic)
         {
-            if (counter < PartsCount)
-            {
-                partsOfName.push_back( temp );
-            }
-            else
-            {
-                throw std::runtime_error("invalid format in file");
-            }
-            counter++;
-        }
-        if (partsOfName.size() == PartsCount)
-        {
-            Person p{ partsOfName[0], partsOfName[1], partsOfName[2] };
+            Person p{firstName, lastName, patronymic};
             personsStack.push(p);
         }
+        else {
+            throw std::runtime_error("Wrong format in file.\n");
+        }
     }
-
     return personsStack;
 }
 
